@@ -452,9 +452,16 @@
     }
 
     function dragLeave(e) {
-      clearTimeout(doc_leave_timer);
-      opts.dragLeave.call(this, e);
-      e.stopPropagation();
+      var rect = this.getBoundingClientRect();
+      var mouseEvt = e.originalEvent;
+      // Check the mouseEvent coordinates are outside of the rectangle
+      if (mouseEvt.x >= rect.left + rect.width || mouseEvt.x < rect.left
+        || mouseEvt.y >= rect.top + rect.height || mouseEvt.y < rect.top) {
+        // We are leaving for real!
+        clearTimeout(doc_leave_timer);
+        opts.dragLeave.call(this, e);
+        e.stopPropagation();
+      }
     }
 
     function docDrop(e) {
