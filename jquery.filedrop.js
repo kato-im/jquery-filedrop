@@ -94,7 +94,8 @@
     var getBuilder = function (filename, filedata, mime, boundary) {
       var dashdash = '--',
           crlf = '\r\n',
-          builder = '';
+          builder = '',
+          paramname = opts.paramname;
 
       if (opts.data) {
         var params = $.param(opts.data).replace(/\+/g, '%20').split(/&/);
@@ -115,10 +116,14 @@
         });
       }
 
+      if (jQuery.isFunction(paramname)){
+        paramname = paramname(filename);
+      }
+
       builder += dashdash;
       builder += boundary;
       builder += crlf;
-      builder += 'Content-Disposition: form-data; name="' + opts.paramname + '"';
+      builder += 'Content-Disposition: form-data; name="' + (paramname||"") + '"';
       builder += '; filename="' + filename + '"';
       builder += crlf;
 
