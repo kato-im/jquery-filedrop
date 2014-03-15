@@ -406,6 +406,9 @@
             opts.error(xhr.statusText, file, fileIndex, xhr.status);
           }
         };
+        xhr.onerror = function() { // in order to handle cross-origin server crashes
+            xhr.onload();
+        };
       };
 
       // Initiate the processing loop
